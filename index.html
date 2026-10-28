@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jemputan Majlis Pertunangan – Nu’ur Ain &amp; Zaki Farhan</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&display=swap">
+<style>
+:root{--gold:#d9b66b;--ink:#0d1424;--cream:#f6ecd6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:radial-gradient(ellipse at 50% 0%,#22335a 0%,#0d1424 65%) fixed;color:var(--cream);font-family:'Cormorant Garamond',Georgia,serif;min-height:100%;display:flex;justify-content:center}
+#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.card{position:relative;z-index:1;width:100%;max-width:520px;margin:4vmin 3vmin;padding:9vw 6vw;text-align:center;border:1px solid var(--gold);outline:1px solid rgba(217,182,107,.35);outline-offset:6px;background:rgba(13,20,36,.55);backdrop-filter:blur(2px)}
+@media(min-width:560px){.card{padding:48px 40px;margin:32px 0}}
+.small{font-size:13px;letter-spacing:.38em;text-transform:uppercase;color:var(--gold)}
+.script{font-family:'Great Vibes','Brush Script MT',cursive;color:var(--gold);font-size:44px;line-height:1.15}
+.names{font-size:34px;font-weight:600;letter-spacing:.1em;line-height:1.35;margin:6px 0}
+.names .amp{display:block;font-family:'Great Vibes','Brush Script MT',cursive;color:var(--gold);font-size:38px;letter-spacing:0}
+.rule{width:70px;height:1px;background:var(--gold);margin:22px auto}
+p{font-size:19px;line-height:1.6}
+.it{font-style:italic}
+.date{font-size:30px;font-weight:600;letter-spacing:.15em;margin-top:4px}
+.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:20px 0 6px}
+.cd div{border:1px solid rgba(217,182,107,.55);padding:12px 2px 8px}
+.cd b{display:block;font-size:32px;font-weight:600;color:var(--gold);font-variant-numeric:tabular-nums}
+.cd span{font-size:11px;letter-spacing:.25em;text-transform:uppercase}
+.row{margin:14px 0}
+.row .small{display:block;margin-bottom:4px;font-size:12px}
+.ph{color:#f4a9bc}
+.foot{font-size:16px;opacity:.85}
+</style>
+</head>
+<body>
+<canvas id="petals"></canvas>
+<main class="card">
+  <div class="small">Bismillahirrahmanirrahim</div>
+  <div class="rule"></div>
+  <p class="it">Dengan penuh kesyukuran, kami menjemput<br>Dato’ / Datin / Tuan / Puan / Encik / Cik<br>ke majlis pertunangan</p>
+  <div class="rule"></div>
+  <div class="names">NU’UR AIN<span class="amp">&amp;</span>ZAKI FARHAN</div>
+  <div class="rule"></div>
+  <div class="small">Pada</div>
+  <div class="date">15 · 11 · 2026</div>
+  <p class="it">Ahad</p>
+
+  <div class="cd" aria-live="off">
+    <div><b id="d">--</b><span>Hari</span></div>
+    <div><b id="h">--</b><span>Jam</span></div>
+    <div><b id="m">--</b><span>Minit</span></div>
+    <div><b id="s">--</b><span>Saat</span></div>
+  </div>
+  <p id="msg" class="it" style="font-size:16px;opacity:.8">lagi menuju hari bahagia</p>
+
+  <div class="rule"></div>
+  <div class="row"><span class="small">Masa</span><p>2.30 petang</p></div>
+  <div class="row"><span class="small">Tempat</span><p>Kampung Alai, Segamat</p></div>
+  <div class="rule"></div>
+  <div class="script">Doa restu anda</div>
+  <p class="foot">Kehadiran dan doa anda amat kami hargai.<br>Semoga ikatan ini diberkati dan dipermudahkan.</p>
+</main>
+
+<script>
+const target=new Date('2026-11-15T14:30:00+08:00').getTime();
+const $=id=>document.getElementById(id),pad=n=>String(n).padStart(2,'0');
+function tick(){
+  let diff=target-Date.now();
+  if(diff<=0){['d','h','m','s'].forEach(k=>$(k).textContent='00');$('msg').textContent='Alhamdulillah, hari bahagia telah tiba';return}
+  const d=Math.floor(diff/864e5);diff-=d*864e5;
+  const h=Math.floor(diff/36e5);diff-=h*36e5;
+  const m=Math.floor(diff/6e4);diff-=m*6e4;
+  $('d').textContent=d;$('h').textContent=pad(h);$('m').textContent=pad(m);$('s').textContent=pad(Math.floor(diff/1e3));
+}
+tick();setInterval(tick,1000);
+
+/* kelopak mawar */
+(function(){
+  const cv=$('petals'),c=cv.getContext('2d');
+  const cols=['#f7c9d4','#f4a9bc','#ffffff','#fde7ec','#f0b6c6','#fbe3e8','#e98fa8'];
+  let W,H,P=[];
+  function make(top){const s=Math.min(W,H)*(.012+Math.random()*.018)+3;
+    return{x:Math.random()*W,y:top?-s*3:Math.random()*H,s,vy:.4+Math.random()*.7,sw:.3+Math.random()*.7,sf:.4+Math.random()*.8,ph:Math.random()*6.28,r:Math.random()*6.28,vr:(Math.random()-.5)*.025,ff:.5+Math.random()*1.2,col:cols[Math.floor(Math.random()*cols.length)],a:.5+Math.random()*.4}}
+  function init(){const r=devicePixelRatio||1;W=innerWidth;H=innerHeight;cv.width=W*r;cv.height=H*r;c.setTransform(r,0,0,r,0,0);
+    P=Array.from({length:Math.round(Math.min(34,Math.max(16,W*H/45000)))},()=>make(false))}
+  let t=0;
+  function draw(l){const s=l.s;c.save();c.translate(l.x,l.y);c.rotate(l.r);c.scale(Math.cos(t*l.ff+l.ph),1);
+    c.globalAlpha=l.a;c.fillStyle=l.col;c.beginPath();c.moveTo(0,-s);
+    c.bezierCurveTo(s*1.15,-s*1.25,s*.9,s*.5,0,s);c.bezierCurveTo(-s*.9,s*.5,-s*1.15,-s*1.25,0,-s);c.fill();
+    c.fillStyle='rgba(255,255,255,.35)';c.beginPath();c.ellipse(0,s*.25,s*.35,s*.55,0,0,6.283);c.fill();c.restore()}
+  function frame(){t+=.016;c.clearRect(0,0,W,H);
+    for(let k=0;k<P.length;k++){const l=P[k];l.y+=l.vy;l.x+=Math.sin(t*l.sf+l.ph)*l.sw;l.r+=l.vr;
+      if(l.y>H+l.s*3||l.x<-60||l.x>W+60)P[k]=make(true);draw(P[k])}
+    requestAnimationFrame(frame)}
+  addEventListener('resize',init);init();frame();
+})();
+</script>
+</body>
+</html>
